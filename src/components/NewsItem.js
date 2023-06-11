@@ -1,27 +1,48 @@
 import React, { Component } from "react";
 
 export class NewsItem extends Component {
+  title = this.props.title;
+  description = this.props.description;
+  imageUrl = this.props.imageUrl;
+  newsUrl = this.props.newsUrl;
+  author = this.props.author;
+  date = this.props.date;
+  source = this.props.source;
+  x = new Date(this.date).toUTCString();
   render() {
-    let { title, description, imageUrl, newsUrl } = this.props;
     return (
       <div className="my-3">
-        <div className="card" style={{ width: "18rem" }}>
+        <div className="card">
           <img
             src={
-              imageUrl
-                ? imageUrl
-                : "https://s.yimg.com/ny/api/res/1.2/1DDaSCwVW0jkwi0wVY_xOw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD04MDA-/https://s.yimg.com/os/creatr-uploaded-images/2023-06/af0036c0-06b8-11ee-bfda-5ba642c17c61"
+              this.imageUrl
+                ? this.imageUrl
+                : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOct77YjX5hfAG_M0pRyTIumKuQy3glQhdwkAF_84b&s"
             }
             className="card-img-top"
             alt="..."
           />
           <div className="card-body">
-            <h5 className="card-title">{title}...</h5>
-            <p className="card-text">{description}...</p>
+            <span
+              className="position-absolute top-0 translate-middle badge rounded-pill bg-danger"
+              style={{ left: "90%", zIndex: 1 }}
+            >
+              {this.source}
+              <span className="visually-hidden">unread messages</span>
+            </span>
+
+            <h5 className="card-title">{this.title}...</h5>
+            <p className="card-text">{this.description}...</p>
+            <p className="card-text">
+              <small className="text-body-secondary">
+                By {this.author ? this.author : "Unknown Author"} on {this.x}
+              </small>
+            </p>
             <a
-              href={`${newsUrl}`}
+              rel="noreferrer"
+              href={`${this.newsUrl}`}
               target="_blank"
-              className="btn btn-sm btn-primary"
+              className="btn btn-sm btn-dark"
             >
               Read More
             </a>
