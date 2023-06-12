@@ -25,7 +25,7 @@ export class NewsItem extends Component {
           <div className="card-body">
             <span
               className="position-absolute top-0 translate-middle badge rounded-pill bg-danger"
-              style={{ left: "90%", zIndex: 1 }}
+              style={{ left: "85%", zIndex: 1 }}
             >
               {this.source}
               <span className="visually-hidden">unread messages</span>

@@ -35,18 +35,21 @@ export class News extends Component {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-  async upodateNews() {
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=c1371e00e20f4e0e937b809d2a89f7ae&pagesize=${this.props.pageSize}&page=${this.state.page}`;
+  upodateNews = async () => {
+    this.props.setProgress(0);
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&pagesize=${this.props.pageSize}&page=${this.state.page}`;
     this.setState({ loading: true });
     let data = await fetch(url);
+    this.props.setProgress(60);
     let parsedData = await data.json();
+    this.props.setProgress(100);
     this.setState({
       loading: false,
       articles: parsedData.articles,
       totalResults: parsedData.totalResults,
     });
     console.log(parsedData);
-  }
+  };
   async componentDidMount() {
     this.upodateNews();
     this.setState({ page: this.state.page + 1 });
@@ -56,7 +59,7 @@ export class News extends Component {
     // a fake async api call like which sends
     // 20 more records in 1.5 secs
 
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=c1371e00e20f4e0e937b809d2a89f7ae&pagesize=${this.props.pageSize}&page=${this.state.page}`;
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&pagesize=${this.props.pageSize}&page=${this.state.page}`;
 
     let data = await fetch(url);
     let parsedData = await data.json();
@@ -83,31 +86,27 @@ export class News extends Component {
           hasMore={this.state.articles.length !== this.state.totalResults}
           loader={<Spin />}
         >
-          {this.state.loading ? (
-            <Spin />
-          ) : (
-            <div className="container">
-              <div className="row">
-                {this.state.articles.map((elememnt) => {
-                  return (
-                    <div className="col-md-4" key={elememnt.url}>
-                      <NewsItem
-                        title={elememnt.title ? elememnt.title : ""}
-                        description={
-                          elememnt.description ? elememnt.description : ""
-                        }
-                        imageUrl={elememnt.urlToImage}
-                        newsUrl={elememnt.url}
-                        author={elememnt.author}
-                        date={elememnt.publishedAt}
-                        source={elememnt.source.name}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
+          <div className="container">
+            <div className="row">
+              {this.state.articles.map((elememnt) => {
+                return (
+                  <div className="col-md-4" key={elememnt.url}>
+                    <NewsItem
+                      title={elememnt.title ? elememnt.title : ""}
+                      description={
+                        elememnt.description ? elememnt.description : ""
+                      }
+                      imageUrl={elememnt.urlToImage}
+                      newsUrl={elememnt.url}
+                      author={elememnt.author}
+                      date={elememnt.publishedAt}
+                      source={elememnt.source.name}
+                    />
+                  </div>
+                );
+              })}
             </div>
-          )}
+          </div>
         </InfiniteScroll>
       </>
     );
